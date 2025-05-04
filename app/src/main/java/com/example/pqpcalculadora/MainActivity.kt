@@ -24,8 +24,13 @@ class MainActivity : AppCompatActivity() {
         val pi = Math.PI
         val euler = Math.E
 
-        /* Variáveis */
+        /* Variáveis Memoria */
         var memoria = 0.0
+        var memoryFull = false
+
+        /* Variaveis Contas */
+        var isResult = false
+        var operacao = 0
 
 
         /* Imports Botões */
@@ -79,12 +84,126 @@ class MainActivity : AppCompatActivity() {
         val btVirgula = findViewById<MaterialButton>(R.id.btvirgula)
         val btResultado = findViewById<MaterialButton>(R.id.btresultado)
 
+
         /* Botões de memoria */
 
-        btMC.listener
+        btMR.isEnabled = memoryFull
+        btMC.isEnabled = memoryFull
 
+        btMC.setOnClickListener {
+            memoria = 0.0
+            memoryFull = false
+            btMR.isEnabled = memoryFull
+            btMC.isEnabled = memoryFull
+        }
 
+        btMR.setOnClickListener {
+            displayNumber.setText(memoria.toString())
+        }
 
+        btMmais.setOnClickListener {
+            memoria += displayNumber.text.toString().toDouble()
+            displayNumber.setText("0")
+            memoryFull = true
+            btMR.isEnabled = memoryFull
+            btMC.isEnabled = memoryFull
+        }
+
+        btMmenos.setOnClickListener {
+            memoria -= displayNumber.text.toString().toDouble()
+            displayNumber.setText("0")
+            memoryFull = true
+            btMR.isEnabled = memoryFull
+            btMC.isEnabled = memoryFull
+        }
+
+        /* Botões Números */
+
+        bt0.setOnClickListener{
+            if (isResult == true)
+                displayNumber.setText("0")
+            if (!displayNumber.text.toString().equals("0"))
+                displayNumber.setText(displayNumber.text.toString().plus("0"))
+        }
+
+        bt1.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("1")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("1"))
+        }
+
+        bt2.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("2")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("2"))
+        }
+
+        bt3.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("3")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("3"))
+        }
+
+        bt4.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("4")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("4"))
+        }
+
+        bt5.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("5")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("5"))
+        }
+
+        bt6.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("6")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("6"))
+        }
+
+        bt7.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("7")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("7"))
+        }
+
+        bt8.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("8")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("8"))
+        }
+
+        bt9.setOnClickListener{
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.setText("9")
+            else
+                displayNumber.setText(displayNumber.text.toString().plus("9"))
+        }
+
+        /* Botão CE/C */
+
+        btCE.setOnClickListener {
+            displayNumber.setText("0")
+            displayNumberHistory.setText("")
+
+            isResult = false
+            operacao = 0
+        }
+
+        btC.setOnClickListener {
+            displayNumber.setText(displayNumber.text.dropLast(1))
+            if (displayNumber.text == "")
+                displayNumber.setText("0")
+        }
 
     }
 }
