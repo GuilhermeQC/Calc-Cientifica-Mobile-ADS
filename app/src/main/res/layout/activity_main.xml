@@ -34,7 +34,8 @@
             android:id="@+id/display_number_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"
+            android:textAlignment="textEnd"
+            android:text=""
             android:textSize="24dp" />
 
     </TableRow>
@@ -505,13 +506,13 @@
         android:layout_weight="1">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btin"
+            android:id="@+id/btln"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:backgroundTint="@color/botao_escuro"
-            android:text="In"
+            android:text="ln"
             app:cornerRadius="5dp"
             tools:ignore="TextSizeCheck" />
 
@@ -528,13 +529,13 @@
             app:cornerRadius="5dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btvirgula"
+            android:id="@+id/btponto"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:backgroundTint="@color/botao_escuro"
-            android:text=","
+            android:text="."
             app:cornerRadius="5dp" />
 
         <com.google.android.material.button.MaterialButton

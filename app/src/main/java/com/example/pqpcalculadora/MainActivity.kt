@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import net.objecthunter.exp4j.ExpressionBuilder
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         /* Variaveis Contas */
         var isResult = false
-        var operacao = 0
+
+
 
 
         /* Imports Botões */
@@ -80,8 +82,9 @@ class MainActivity : AppCompatActivity() {
         val bt3 = findViewById<MaterialButton>(R.id.bt3)
         val btSoma = findViewById<MaterialButton>(R.id.btsoma)
 
+        val btLn = findViewById<MaterialButton>(R.id.btln)
         val bt0 = findViewById<MaterialButton>(R.id.bt0)
-        val btVirgula = findViewById<MaterialButton>(R.id.btvirgula)
+        val btPonto = findViewById<MaterialButton>(R.id.btponto)
         val btResultado = findViewById<MaterialButton>(R.id.btresultado)
 
 
@@ -124,6 +127,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("0")
             if (!displayNumber.text.toString().equals("0"))
                 displayNumber.setText(displayNumber.text.toString().plus("0"))
+
+            isResult = false
         }
 
         bt1.setOnClickListener{
@@ -131,6 +136,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("1")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("1"))
+
+            isResult = false
         }
 
         bt2.setOnClickListener{
@@ -138,6 +145,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("2")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("2"))
+
+            isResult = false
         }
 
         bt3.setOnClickListener{
@@ -145,6 +154,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("3")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("3"))
+
+            isResult = false
         }
 
         bt4.setOnClickListener{
@@ -152,6 +163,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("4")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("4"))
+
+            isResult = false
         }
 
         bt5.setOnClickListener{
@@ -159,6 +172,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("5")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("5"))
+
+            isResult = false
         }
 
         bt6.setOnClickListener{
@@ -166,6 +181,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("6")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("6"))
+
+            isResult = false
         }
 
         bt7.setOnClickListener{
@@ -173,6 +190,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("7")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("7"))
+
+            isResult = false
         }
 
         bt8.setOnClickListener{
@@ -180,6 +199,8 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("8")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("8"))
+
+            isResult = false
         }
 
         bt9.setOnClickListener{
@@ -187,6 +208,14 @@ class MainActivity : AppCompatActivity() {
                 displayNumber.setText("9")
             else
                 displayNumber.setText(displayNumber.text.toString().plus("9"))
+
+            isResult = false
+        }
+
+        btPonto.setOnClickListener {
+            if (!displayNumber.text.contains("."))
+                displayNumber.setText(displayNumber.text.toString().plus("."))
+            isResult = false
         }
 
         /* Botão CE/C */
@@ -196,7 +225,6 @@ class MainActivity : AppCompatActivity() {
             displayNumberHistory.setText("")
 
             isResult = false
-            operacao = 0
         }
 
         btC.setOnClickListener {
@@ -204,6 +232,120 @@ class MainActivity : AppCompatActivity() {
             if (displayNumber.text == "")
                 displayNumber.setText("0")
         }
+
+        /* Botões Euler/Pi */
+
+        btEuler.setOnClickListener {
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.text = String.format("%.4f", euler)
+            else displayNumber.text = String.format("%.4f", euler)
+        }
+
+        btPi.setOnClickListener {
+            if (displayNumber.text.toString().equals("0") || isResult)
+                displayNumber.text = String.format("%.4f", pi)
+            else displayNumber.text = String.format("%.4f", pi)
+        }
+
+        /* Botões Operações */
+
+        btSoma.setOnClickListener {
+
+            var tempo = displayNumberHistory.text.toString()
+
+            if (!displayNumberHistory.text.toString().endsWith("+")) {
+
+                if (tempo != "") {
+                    displayNumberHistory.setText(tempo + "+" + displayNumber.text.toString())
+                }
+                else if (tempo == ""){
+                    displayNumberHistory.setText(displayNumber.text.toString() + "+")
+                }
+            }
+
+            else if (displayNumberHistory.text.toString().endsWith("+")){
+
+                displayNumberHistory.setText(tempo + displayNumber.text.toString())
+
+            }
+
+            isResult = true
+        }
+
+        btMenos.setOnClickListener {
+
+            var tempo = displayNumberHistory.text.toString()
+
+            if (!displayNumberHistory.text.toString().endsWith("-")) {
+
+                if (tempo != "") {
+                    displayNumberHistory.setText(tempo + "-" + displayNumber.text.toString())
+                }
+                else if (tempo == ""){
+                    displayNumberHistory.setText(displayNumber.text.toString() + "-")
+                }
+            }
+
+            else if (displayNumberHistory.text.toString().endsWith("-")){
+
+                displayNumberHistory.setText(tempo + displayNumber.text.toString())
+
+            }
+
+            isResult = true
+        }
+
+        btVezes.setOnClickListener {
+
+            var tempo = displayNumberHistory.text.toString()
+
+            if (!displayNumberHistory.text.toString().endsWith("*")) {
+
+                if (tempo != "") {
+                    displayNumberHistory.setText(tempo + "*" + displayNumber.text.toString())
+                }
+                else if (tempo == ""){
+                    displayNumberHistory.setText(displayNumber.text.toString() + "*")
+                }
+            }
+
+            else if (displayNumberHistory.text.toString().endsWith("*")){
+
+                displayNumberHistory.setText(tempo + displayNumber.text.toString())
+
+            }
+
+            isResult = true
+        }
+
+        btDiv.setOnClickListener {
+
+            var tempo = displayNumberHistory.text.toString()
+
+            if (!displayNumberHistory.text.toString().endsWith("/")) {
+
+                if (tempo != "") {
+                    displayNumberHistory.setText(tempo + "/" + displayNumber.text.toString())
+                }
+                else if (tempo == ""){
+                    displayNumberHistory.setText(displayNumber.text.toString() + "/")
+                }
+            }
+
+            else if (displayNumberHistory.text.toString().endsWith("/")){
+
+                displayNumberHistory.setText(tempo + displayNumber.text.toString())
+
+            }
+
+            isResult = true
+        }
+
+
+
+
+
+
 
     }
 }
