@@ -1,5 +1,8 @@
 *.iml
+<<<<<<< HEAD
 .gradle
+=======
+>>>>>>> 9af8fa8 (att)
 /local.properties
 /.idea/caches
 /.idea/libraries
