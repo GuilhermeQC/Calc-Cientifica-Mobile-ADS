@@ -1,13 +1,14 @@
 package com.example.pqpcalculadora
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
-import net.objecthunter.exp4j.ExpressionBuilder
+import net.objecthunter.exp4j.ExpressionBuilder /* Expression Builder */
 
 
 class MainActivity : AppCompatActivity() {
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         val btExp = findViewById<MaterialButton>(R.id.btexp)
         val btMod = findViewById<MaterialButton>(R.id.btmod)
 
-        val btRaiz = findViewById<MaterialButton>(R.id.btraiz)
+        val btRaizQd = findViewById<MaterialButton>(R.id.btraizq)
         val btPaberto = findViewById<MaterialButton>(R.id.btpaberto)
         val btPfechado = findViewById<MaterialButton>(R.id.btpfechado)
         val btFatorial = findViewById<MaterialButton>(R.id.btfatorial)
@@ -236,15 +237,25 @@ class MainActivity : AppCompatActivity() {
         /* Botões Euler/Pi */
 
         btEuler.setOnClickListener {
-            if (displayNumber.text.toString().equals("0") || isResult)
+            if (displayNumber.text.toString().equals("0") || isResult) {
                 displayNumber.text = String.format("%.4f", euler)
-            else displayNumber.text = String.format("%.4f", euler)
+                displayNumber.text = displayNumber.text.toString().replace(",", ".")
+            }
+            else {
+                displayNumber.text = String.format("%.4f", euler)
+                displayNumber.text = displayNumber.text.toString().replace(",", ".")
+            }
+
         }
 
         btPi.setOnClickListener {
-            if (displayNumber.text.toString().equals("0") || isResult)
+            if (displayNumber.text.toString().equals("0") || isResult){
                 displayNumber.text = String.format("%.4f", pi)
-            else displayNumber.text = String.format("%.4f", pi)
+                displayNumber.text = displayNumber.text.toString().replace(",", ".")
+            }
+            else
+                displayNumber.text = String.format("%.4f", pi)
+                displayNumber.text = displayNumber.text.toString().replace(",", ".")
         }
 
         /* Botões Operações */
@@ -341,10 +352,88 @@ class MainActivity : AppCompatActivity() {
             isResult = true
         }
 
+        btPotencia.setOnClickListener {
+
+            var tempo = displayNumberHistory.text.toString()
+
+            if (!displayNumberHistory.text.toString().endsWith("^")) {
+
+                if (tempo != "") {
+                    displayNumberHistory.setText(tempo + "^" + displayNumber.text.toString())
+                }
+                else if (tempo == ""){
+                    displayNumberHistory.setText(displayNumber.text.toString() + "^")
+                }
+            }
+
+            else if (displayNumberHistory.text.toString().endsWith("^")){
+
+                displayNumberHistory.setText(tempo + displayNumber.text.toString())
+
+            }
+
+            isResult = true
+        }
+
+        btXquadrado.setOnClickListener {
+
+            displayNumberHistory.setText(displayNumber.text.toString() + "^2")
+            var operacao = ExpressionBuilder(displayNumberHistory.text.toString()).build().evaluate()
+            displayNumber.setText(operacao.toString())
+            isResult = true
+            displayNumberHistory.setText("")
+
+        }
+
+        btRaizQd.setOnClickListener {
+
+            var tempo = displayNumberHistory.text.toString()
+
+            if (!displayNumberHistory.text.toString().endsWith("sqrt()")) {
+
+                if (tempo != "") {
+                    displayNumberHistory.setText(tempo + "sqrt(" + displayNumber.text.toString() + ")")
+                }
+                else if (tempo == ""){
+                    displayNumberHistory.setText("sqrt(" + displayNumber.text.toString() + ")")
+                }
+            }
+
+            else if (displayNumberHistory.text.toString().endsWith("sqrt()")){
+
+                displayNumberHistory.setText(tempo + displayNumber.text.toString())
+
+            }
+
+            isResult = true
+        }
+
+        btAbs.setOnClickListener {
+
+            var operacao: Double = Math.abs(displayNumber.text.toString().toDouble())
+            displayNumberHistory.setText("abs(" + displayNumber.text.toString() + ")")
+            displayNumber.setText(operacao.toString())
+            isResult = true
+            displayNumberHistory.setText("")
+
+        }
 
 
 
 
+
+        /* Botão Resultado */
+
+        btResultado.setOnClickListener {
+
+            displayNumberHistory.setText(displayNumberHistory.text.toString() + displayNumber.text.toString())
+            var exp = ExpressionBuilder(displayNumberHistory.text.toString()).build()
+            var result = exp.evaluate()
+            displayNumber.setText(result.toString())
+            isResult = true
+            displayNumberHistory.setText("")
+
+        }
 
 
     }

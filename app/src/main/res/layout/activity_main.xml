@@ -268,7 +268,7 @@
         android:layout_weight="1">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btraiz"
+            android:id="@+id/btraizq"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
