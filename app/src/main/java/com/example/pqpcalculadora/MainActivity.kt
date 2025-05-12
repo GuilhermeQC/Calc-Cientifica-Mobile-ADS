@@ -2,6 +2,8 @@ package com.example.pqpcalculadora
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TableRow
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +35,18 @@ class MainActivity : AppCompatActivity() {
         /* Variaveis Contas */
         var isResult = false
 
+        /* Trigonometria */
+        var trig = false
 
+        /* EXP e MOD */
+
+        var modativo = false
+        var modt1 = 0.0
+        var modt2 = 0.0
+
+        var exp = false
+        var expt1 = 0.0
+        var expt2 = 0.0
 
 
         /* Imports Botões */
@@ -46,9 +59,8 @@ class MainActivity : AppCompatActivity() {
         val btMmenos = findViewById<MaterialButton>(R.id.btMmenos)
 
         val btTrig = findViewById<MaterialButton>(R.id.bttrig)
-        val btFunc = findViewById<MaterialButton>(R.id.btFunc)
+        val btDeg = findViewById<MaterialButton>(R.id.btDeg)
 
-        val bt2nd = findViewById<MaterialButton>(R.id.bt2nd)
         val btPi = findViewById<MaterialButton>(R.id.btpi)
         val btEuler = findViewById<MaterialButton>(R.id.bteuler)
         val btCE = findViewById<MaterialButton>(R.id.btCE)
@@ -78,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         val bt6 = findViewById<MaterialButton>(R.id.bt6)
         val btMenos = findViewById<MaterialButton>(R.id.btmenos)
 
+        val btLog = findViewById<MaterialButton>(R.id.btlog)
         val bt1 = findViewById<MaterialButton>(R.id.bt1)
         val bt2 = findViewById<MaterialButton>(R.id.bt2)
         val bt3 = findViewById<MaterialButton>(R.id.bt3)
@@ -88,6 +101,15 @@ class MainActivity : AppCompatActivity() {
         val btPonto = findViewById<MaterialButton>(R.id.btponto)
         val btResultado = findViewById<MaterialButton>(R.id.btresultado)
 
+        /* Parte Trigonometria */
+
+        val btsen = findViewById<MaterialButton>(R.id.btsen)
+        val btcos = findViewById<MaterialButton>(R.id.btcos)
+        val bttan = findViewById<MaterialButton>(R.id.bttan)
+        val btasen = findViewById<MaterialButton>(R.id.btasen)
+        val btacos = findViewById<MaterialButton>(R.id.btacos)
+        val btatan = findViewById<MaterialButton>(R.id.btatan)
+        val hidetrig = findViewById<TableRow>(R.id.trigfunc)
 
         /* Botões de memoria */
 
@@ -123,7 +145,7 @@ class MainActivity : AppCompatActivity() {
 
         /* Botões Números */
 
-        bt0.setOnClickListener{
+        bt0.setOnClickListener {
             if (isResult == true)
                 displayNumber.setText("0")
             if (!displayNumber.text.toString().equals("0"))
@@ -132,7 +154,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt1.setOnClickListener{
+        bt1.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("1")
             else
@@ -141,7 +163,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt2.setOnClickListener{
+        bt2.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("2")
             else
@@ -150,7 +172,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt3.setOnClickListener{
+        bt3.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("3")
             else
@@ -159,7 +181,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt4.setOnClickListener{
+        bt4.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("4")
             else
@@ -168,7 +190,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt5.setOnClickListener{
+        bt5.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("5")
             else
@@ -177,7 +199,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt6.setOnClickListener{
+        bt6.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("6")
             else
@@ -186,7 +208,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt7.setOnClickListener{
+        bt7.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("7")
             else
@@ -195,7 +217,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt8.setOnClickListener{
+        bt8.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("8")
             else
@@ -204,7 +226,7 @@ class MainActivity : AppCompatActivity() {
             isResult = false
         }
 
-        bt9.setOnClickListener{
+        bt9.setOnClickListener {
             if (displayNumber.text.toString().equals("0") || isResult)
                 displayNumber.setText("9")
             else
@@ -240,8 +262,7 @@ class MainActivity : AppCompatActivity() {
             if (displayNumber.text.toString().equals("0") || isResult) {
                 displayNumber.text = String.format("%.4f", euler)
                 displayNumber.text = displayNumber.text.toString().replace(",", ".")
-            }
-            else {
+            } else {
                 displayNumber.text = String.format("%.4f", euler)
                 displayNumber.text = displayNumber.text.toString().replace(",", ".")
             }
@@ -249,108 +270,88 @@ class MainActivity : AppCompatActivity() {
         }
 
         btPi.setOnClickListener {
-            if (displayNumber.text.toString().equals("0") || isResult){
+            if (displayNumber.text.toString().equals("0") || isResult) {
                 displayNumber.text = String.format("%.4f", pi)
                 displayNumber.text = displayNumber.text.toString().replace(",", ".")
-            }
-            else
+            } else
                 displayNumber.text = String.format("%.4f", pi)
-                displayNumber.text = displayNumber.text.toString().replace(",", ".")
+            displayNumber.text = displayNumber.text.toString().replace(",", ".")
         }
 
-        /* Botões Operações */
+        /* Função para adicionar */
 
-        btSoma.setOnClickListener {
+        fun appendOperator(op: String) {
+            val historico = displayNumberHistory.text.toString()
+            val atual = displayNumber.text.toString()
 
-            var tempo = displayNumberHistory.text.toString()
+            if (isResult) {
+                // Se o último valor foi resultado, começa nova operação com o resultado
+                displayNumberHistory.text = atual + op
+            } else {
+                if (atual != "0") {
+                    displayNumberHistory.text = historico + atual + op
+                } else if (historico.isNotEmpty() && !historico.last().toString().matches(Regex("[+\\-*/(]"))) {
 
-            if (!displayNumberHistory.text.toString().endsWith("+")) {
-
-                if (tempo != "") {
-                    displayNumberHistory.setText(tempo + "+" + displayNumber.text.toString())
-                }
-                else if (tempo == ""){
-                    displayNumberHistory.setText(displayNumber.text.toString() + "+")
+                    displayNumberHistory.text = historico + op
                 }
             }
 
-            else if (displayNumberHistory.text.toString().endsWith("+")){
-
-                displayNumberHistory.setText(tempo + displayNumber.text.toString())
-
-            }
-
-            isResult = true
+            displayNumber.text = "0"
+            isResult = false
         }
 
-        btMenos.setOnClickListener {
+// Botões de operação
+        btSoma.setOnClickListener { appendOperator("+") }
+        btMenos.setOnClickListener { appendOperator("-") }
+        btVezes.setOnClickListener { appendOperator("*") }
+        btDiv.setOnClickListener { appendOperator("/") }
 
-            var tempo = displayNumberHistory.text.toString()
+// Parênteses
+        btPaberto.setOnClickListener {
+            val historico = displayNumberHistory.text.toString()
 
-            if (!displayNumberHistory.text.toString().endsWith("-")) {
-
-                if (tempo != "") {
-                    displayNumberHistory.setText(tempo + "-" + displayNumber.text.toString())
-                }
-                else if (tempo == ""){
-                    displayNumberHistory.setText(displayNumber.text.toString() + "-")
+            if (isResult) {
+                displayNumberHistory.text = displayNumber.text.toString() + "("
+                displayNumber.text = "0"
+            } else {
+                if (displayNumber.text.toString() != "0") {
+                    displayNumberHistory.text = historico + displayNumber.text.toString() + "*("
+                    displayNumber.text = "0"
+                } else {
+                    displayNumberHistory.text = historico + "("
                 }
             }
 
-            else if (displayNumberHistory.text.toString().endsWith("-")){
-
-                displayNumberHistory.setText(tempo + displayNumber.text.toString())
-
-            }
-
-            isResult = true
+            isResult = false
         }
 
-        btVezes.setOnClickListener {
+        btPfechado.setOnClickListener {
+            val atual = displayNumber.text.toString()
+            val historico = displayNumberHistory.text.toString()
 
-            var tempo = displayNumberHistory.text.toString()
-
-            if (!displayNumberHistory.text.toString().endsWith("*")) {
-
-                if (tempo != "") {
-                    displayNumberHistory.setText(tempo + "*" + displayNumber.text.toString())
-                }
-                else if (tempo == ""){
-                    displayNumberHistory.setText(displayNumber.text.toString() + "*")
-                }
+            if (atual != "0") {
+                displayNumberHistory.text = historico + atual + ")"
+                displayNumber.text = "0"
+            } else {
+                displayNumberHistory.text = historico + ")"
             }
-
-            else if (displayNumberHistory.text.toString().endsWith("*")){
-
-                displayNumberHistory.setText(tempo + displayNumber.text.toString())
-
-            }
-
-            isResult = true
         }
 
-        btDiv.setOnClickListener {
 
-            var tempo = displayNumberHistory.text.toString()
-
-            if (!displayNumberHistory.text.toString().endsWith("/")) {
-
-                if (tempo != "") {
-                    displayNumberHistory.setText(tempo + "/" + displayNumber.text.toString())
+        btPfechado.setOnClickListener {
+            if (!isResult) {
+                val currentNumber = displayNumber.text.toString()
+                if (currentNumber != "0") {
+                    // Adiciona o número atual ao histórico antes de fechar parêntese
+                    displayNumberHistory.text = displayNumberHistory.text.toString() + currentNumber
+                    displayNumber.text = "0"
                 }
-                else if (tempo == ""){
-                    displayNumberHistory.setText(displayNumber.text.toString() + "/")
-                }
+                // Adiciona parêntese de fechamento ao histórico
+                displayNumberHistory.text = displayNumberHistory.text.toString() + ")"
             }
-
-            else if (displayNumberHistory.text.toString().endsWith("/")){
-
-                displayNumberHistory.setText(tempo + displayNumber.text.toString())
-
-            }
-
-            isResult = true
         }
+
+        /* Operações Especiais */
 
         btPotencia.setOnClickListener {
 
@@ -360,13 +361,10 @@ class MainActivity : AppCompatActivity() {
 
                 if (tempo != "") {
                     displayNumberHistory.setText(tempo + "^" + displayNumber.text.toString())
-                }
-                else if (tempo == ""){
+                } else if (tempo == "") {
                     displayNumberHistory.setText(displayNumber.text.toString() + "^")
                 }
-            }
-
-            else if (displayNumberHistory.text.toString().endsWith("^")){
+            } else if (displayNumberHistory.text.toString().endsWith("^")) {
 
                 displayNumberHistory.setText(tempo + displayNumber.text.toString())
 
@@ -378,7 +376,8 @@ class MainActivity : AppCompatActivity() {
         btXquadrado.setOnClickListener {
 
             displayNumberHistory.setText(displayNumber.text.toString() + "^2")
-            var operacao = ExpressionBuilder(displayNumberHistory.text.toString()).build().evaluate()
+            var operacao =
+                ExpressionBuilder(displayNumberHistory.text.toString()).build().evaluate()
             displayNumber.setText(operacao.toString())
             isResult = true
             displayNumberHistory.setText("")
@@ -387,51 +386,197 @@ class MainActivity : AppCompatActivity() {
 
         btRaizQd.setOnClickListener {
 
-            var tempo = displayNumberHistory.text.toString()
-
-            if (!displayNumberHistory.text.toString().endsWith("sqrt()")) {
-
-                if (tempo != "") {
-                    displayNumberHistory.setText(tempo + "sqrt(" + displayNumber.text.toString() + ")")
-                }
-                else if (tempo == ""){
-                    displayNumberHistory.setText("sqrt(" + displayNumber.text.toString() + ")")
-                }
-            }
-
-            else if (displayNumberHistory.text.toString().endsWith("sqrt()")){
-
-                displayNumberHistory.setText(tempo + displayNumber.text.toString())
-
-            }
-
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("√ $tempo")
+            displayNumber.setText((Math.sqrt(tempo.toDouble())).toString())
             isResult = true
+
         }
 
         btAbs.setOnClickListener {
 
-            var operacao: Double = Math.abs(displayNumber.text.toString().toDouble())
-            displayNumberHistory.setText("abs(" + displayNumber.text.toString() + ")")
-            displayNumber.setText(operacao.toString())
-            isResult = true
-            displayNumberHistory.setText("")
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("abs($tempo)")
+            displayNumber.setText((Math.abs(tempo.toString().toInt())).toString())
 
         }
 
 
+        btLn.setOnClickListener {
 
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("Logₑ $tempo")
+
+            displayNumber.setText(Math.log(tempo.toDouble()).toString())
+            isResult = true
+        }
+
+        btLog.setOnClickListener {
+
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("Log₁₀ $tempo")
+
+            displayNumber.setText((Math.log10(tempo.toDouble())).toString())
+            isResult = true
+        }
+
+        bt1sobrex.setOnClickListener {
+
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("1/$tempo")
+
+            displayNumber.setText((1 / tempo.toString().toDouble()).toString())
+            isResult = true
+        }
+
+        btFatorial.setOnClickListener {
+
+            fun fatorial(n: Int): Long {
+                if (n == 0) return 1 // Caso base: fatorial de 0 é 1
+                return n * fatorial(n - 1) // Chamada recursiva
+            }
+
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("$tempo!")
+            displayNumber.setText((fatorial(tempo.toString().toInt())).toString())
+
+            isResult = true
+        }
+
+        /* Trigonometria */
+
+        btTrig.setOnClickListener {
+
+            if (hidetrig.visibility == View.GONE) {
+                hidetrig.visibility = View.VISIBLE
+            } else if (btTrig.visibility == View.VISIBLE) {
+                hidetrig.visibility = View.GONE
+            }
+        }
+
+        btsen.setOnClickListener {
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("Sen($tempo)")
+            var tempoc = Math.toRadians(tempo.toDouble())
+            var calc = Math.sin(tempoc)
+            displayNumber.setText(String.format("%.2f", calc).replace(",", "."))
+
+            isResult = true
+        }
+
+        btcos.setOnClickListener {
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("Cos($tempo)")
+            var tempoc = Math.toRadians(tempo.toDouble())
+            var calc = Math.cos(tempoc)
+            displayNumber.setText(String.format("%.2f", calc).replace(",", "."))
+
+            isResult = true
+        }
+
+        bttan.setOnClickListener {
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("Tan($tempo)")
+            var tempoc = Math.toRadians(tempo.toDouble())
+            var calc = Math.tan(tempoc)
+            displayNumber.setText(String.format("%.2f", calc).replace(",", "."))
+
+            isResult = true
+        }
+
+        btasen.setOnClickListener {
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("ASen($tempo)")
+            var calc = Math.asin(tempo.toDouble())
+            displayNumber.setText(String.format("%.2f", Math.toDegrees(calc)).replace(",", "."))
+
+            isResult = true
+        }
+
+        btacos.setOnClickListener {
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("ACos($tempo)")
+            var calc = Math.acos(tempo.toDouble())
+            displayNumber.setText(String.format("%.2f", Math.toDegrees(calc)).replace(",", "."))
+
+            isResult = true
+        }
+
+        btatan.setOnClickListener {
+            var tempo = displayNumber.text.toString()
+            displayNumberHistory.setText("ATan($tempo)")
+            var calc = Math.atan(tempo.toDouble())
+            displayNumber.setText(String.format("%.2f", Math.toDegrees(calc)).replace(",", "."))
+
+            isResult = true
+        }
+
+        /* Botão EXP e MOD */
+
+        btMod.setOnClickListener {
+
+            modt1 = displayNumber.text.toString().toDouble()
+            displayNumber.text = "0"
+            modativo = true
+
+        }
+
+        btExp.setOnClickListener {
+
+            expt1 = displayNumber.text.toString().toDouble()
+            displayNumber.text = "0"
+            exp = true
+
+        }
+
+
+        /* Botão DEGREE */
+        btDeg.setOnClickListener {
+            if (btDeg.text == "DEG")
+                btDeg.text = "RAD"
+            else if (btDeg.text == "RAD")
+                btDeg.text = "GRAD"
+            else if (btDeg.text == "GRAD")
+                btDeg.text = "DEG"
+        }
 
 
         /* Botão Resultado */
 
         btResultado.setOnClickListener {
 
-            displayNumberHistory.setText(displayNumberHistory.text.toString() + displayNumber.text.toString())
-            var exp = ExpressionBuilder(displayNumberHistory.text.toString()).build()
-            var result = exp.evaluate()
-            displayNumber.setText(result.toString())
-            isResult = true
-            displayNumberHistory.setText("")
+            if (modativo == true) {
+                modt2 = displayNumber.text.toString().toDouble()
+                var calc = modt1 % modt2
+                displayNumberHistory.setText("$modt1 % $modt2")
+                displayNumber.text = calc.toString()
+                modt1 = 0.0
+                modt2 = 0.0
+                modativo = false
+                isResult = true
+
+            }
+            else if (exp == true) {
+                expt2 = displayNumber.text.toString().toDouble()
+                var calc = expt1 * Math.pow(10.0, expt2)
+                displayNumber.setText(calc.toString())
+
+                exp = false
+                expt1 = 0.0
+                expt2 = 0.0
+                isResult = true
+            }
+
+            else {
+                displayNumberHistory.setText(displayNumberHistory.text.toString() + "+" + displayNumber.text.toString())
+                var expressao = ExpressionBuilder(displayNumberHistory.text.toString()).build()
+                var result = expressao.evaluate()
+                displayNumber.setText(result.toString())
+                isResult = true
+                displayNumberHistory.setText("")
+
+
+            }
 
         }
 
